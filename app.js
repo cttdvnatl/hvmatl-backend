@@ -6,9 +6,9 @@ const logger = require('morgan');
 const mongoose = require("mongoose");
 
 //Setup db connection
-const dbURL = process.env.MONGODB_URL;
+// const dbURL = process.env.MONGODB_URL;
 // mongoose.connect('mongodb://hvmatl:hvmatl@localhost:27017/hvmatl', {useNewUrlParser: true, useUnifiedTopology: true});
-const dbURL = "mongodb+srv://hvmatl:hvmatl@hvmatl-wqthh.gcp.mongodb.net/hvmatl?retryWrites=true&w=majority"
+const dbURL = "mongodb+srv://hvmatl:hvmatl@hvmatl-wqthh.gcp.mongodb.net/hvmatl?retryWrites=true&w=majority";
 mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //Config routes

@@ -9,7 +9,6 @@ const mongoose = require("mongoose");
 const dbURL = process.env.MONGODB_URL || 'mongodb://hvmatl:hvmatl@localhost:27017/hvmatl';
 
 mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true});
-
 //Config routes
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');

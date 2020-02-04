@@ -1,8 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
+const auth = require('./auth');
+
 //Setup router
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -38,7 +39,7 @@ router.post('/register', function(req, res) {
 router.get('/:id', (req, res) => {
   const token = req.headers['authorization'].replace('Bearer ','');
   if(token) {
-	return jwt.verify(token, process.env.TOKEN_DECODE_KEY, {algorithms: ['RS512']}, (err) => {
+	return auth.verifyToken(token, (err) => {
 	  if(err)
 		return res.status(403).send("Access denied");
 	  User.findById(req.params.id, (err, user) => {

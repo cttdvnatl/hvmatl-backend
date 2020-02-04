@@ -19,15 +19,12 @@ router.post('/', (req, res) => {
             return res.status(400).send('User does not exist');
         }
         if(bcrypt.compareSync(req.body.password, user.password)) {
-            const token = jwt.sign({id: user._id, username: user.username}, process.env.TOKEN_ENCODE_KEY, {
-                expiresIn: 86400,
-                algorithm:'RS512'
-            });
+            const token = createToken({id: user._id, username: user.username});
             return res.status(200).send({id: user._id, token: token}); 
         }
     });
 });
 
 const verifyToken = (token, callback) => jwt.verify(token, process.env.TOKEN_DECODE_KEY, {algorithms:['RS512']}, callback(err, decode));
-const createToken = (payload, callback) => jwt.sign(payload, process.env.TOKEN_ENCODE_KEY, {algorithm:'RS512', expiresIn: 86400}, callback(err, token));
+const createToken = (payload) => jwt.sign(payload, process.env.TOKEN_ENCODE_KEY, {algorithm:'RS512', expiresIn: 86400});
 module.exports = {router, verifyToken, createToken};

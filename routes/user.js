@@ -2,7 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const bcrypt = require('bcryptjs');
-const auth = require('./auth');
+const {verifyToken} = require('../utils/authUtils');
 
 //Setup router
 const router = express.Router();
@@ -37,9 +37,9 @@ router.post('/register', function(req, res) {
 
 /* Find User by id*/
 router.get('/:id', (req, res) => {
-  const token = req.headers['authorization'].replace('Bearer ','');
-  if(token) {
-	return auth.verifyToken(token, (err) => {
+  if(req.headers['authorization']) {
+	const token = req.headers['authorization'].replace('Bearer ','');  
+	return verifyToken(token, (err) => {
 	  if(err)
 		return res.status(403).send("Access denied");
 	  User.findById(req.params.id, (err, user) => {

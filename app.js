@@ -12,7 +12,7 @@ mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true});
 //Config routes
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
-const authRouter = require('./routes/auth').router;
+const authRouter = require('./routes/auth');
 
 //Setup express server
 const app = express();

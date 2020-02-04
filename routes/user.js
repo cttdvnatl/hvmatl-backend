@@ -1,6 +1,8 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 //Setup router
 const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
@@ -12,32 +14,41 @@ const User = require('../model/User');
 /* Register a new user*/
 router.post('/register', function(req, res) {
   User.findOne({
-    username: req.body.username
+	username: req.body.username
   }, (err, user) => {
-    if(err)
-      return res.status(500).send(`Internal Server Error: ${err}`);
-    //Create a user if it does not exist  
-    if(user === null) {
-      return User.create({
-        username: req.body.username,
-        password: req.body.password
-      }, (err, user) => {
-        if(err)
-          return res.status(500).send(`Internal Server Error: ${err}`);
-        return res.status(201).send(user);
-      })
-    }
-    return res.status(400).send('User alredy exists');
+	if(err)
+	  return res.status(500).send(`Internal Server Error: ${err}`);
+	//Create a user if it does not exist  
+	if(user === null) {
+	  const pwd = bcrypt.hashSync(req.body.password, 8);
+	  return User.create({
+		username: req.body.username,
+		password: pwd
+	  }, (err, user) => {
+		if(err)
+		  return res.status(500).send(`Internal Server Error: ${err}`);
+		return res.status(201).send({id:user._id});
+	  })
+	}
+	return res.status(400).send('User alredy exists');
   })
 });
 
 /* Find User by id*/
 router.get('/:id', (req, res) => {
-  User.findById(req.params.id, (err, user) => {
-    if(err)
-      return res.status(404).send(`User not found: ${err}`);
-    return res.status(200).send(user);
-  })
+  const token = req.headers['authorization'].replace('Bearer ','');
+  if(token) {
+	return jwt.verify(token, process.env.TOKEN_DECODE_KEY, {algorithms: ['RS512']}, (err) => {
+	  if(err)
+		return res.status(403).send("Access denied");
+	  User.findById(req.params.id, (err, user) => {
+		if(err)
+		  return res.status(404).send(`User not found`);
+		return res.status(200).send(user);
+	  })
+	});
+  }
+  return res.status(403).send('Access denied');
 });
 
 module.exports = router;

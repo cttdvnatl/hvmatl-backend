@@ -6,15 +6,14 @@ const logger = require('morgan');
 const mongoose = require("mongoose");
 
 //Setup db connection
-// const dbURL = process.env.MONGODB_URL;
-// mongoose.connect('mongodb://hvmatl:hvmatl@localhost:27017/hvmatl', {useNewUrlParser: true, useUnifiedTopology: true});
-const dbURL = "mongodb+srv://hvmatl:hvmatl@hvmatl-wqthh.gcp.mongodb.net/hvmatl?retryWrites=true&w=majority";
+const dbURL = process.env.MONGODB_URL || 'mongodb://hvmatl:hvmatl@localhost:27017/hvmatl';
+
 mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true});
 
 //Config routes
 const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
-
+const authRouter = require('./routes/auth');
 
 //Setup express server
 const app = express();
@@ -31,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
-
+app.use('/authentication', authRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

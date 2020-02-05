@@ -21,17 +21,11 @@ router.post('/', (req, res) => {
         }
         console.log(req.body.password);
         console.log(user.password);
-        return bcrypt.compare(req.body.password, user.password, (err, success) => {
-            if(err) {
-                console.log(err);
-                return res.status(500).send('Internal Server Error: Unable to authenticate');
-            }
-            if(success) {    
-                console.log('success');
-                const token = createToken({id: user._id, username: user.username});
-                return res.status(200).send({id: user._id, token: token}); 
-            }
-        })
+        if(bcrypt.compareSync(req.body.password, user.password)) {
+            const token = createToken({id: user._id, username: user.username});
+            return res.status(200).send({id: user._id, token: token}); 
+        }
+        return res.status(400).send('Invalid password');
     });
 });
 

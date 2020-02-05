@@ -6,7 +6,7 @@ const logger = require('morgan');
 const mongoose = require("mongoose");
 
 //Setup db connection
-const dbURL = process.env.MONGODB_URL || 'mongodb://hvmatl:hvmatl@localhost:27017/hvmatl';
+const dbURL = process.env.MONGODB_URL;
 
 mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true});
 //Config routes

@@ -45,7 +45,7 @@ router.get('/:id', (req, res) => {
 	  User.findById(req.params.id, (err, user) => {
 		if(err)
 		  return res.status(404).send(`User not found`);
-		return res.status(200).send(user);
+		return res.status(200).send({id: user._id, username:user.username});
 	  })
 	});
   }

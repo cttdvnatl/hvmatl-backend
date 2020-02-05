@@ -20,9 +20,12 @@ router.post('/', (req, res) => {
             return res.status(400).send('User does not exist');
         }
         return bcrypt.compare(req.body.password, user.password, (err, success) => {
-            if(err)
+            if(err) {
+                console.log(err);
                 return res.status(500).send('Internal Server Error: Unable to authenticate');
+            }
             if(success) {    
+                console.log('success');
                 const token = createToken({id: user._id, username: user.username});
                 return res.status(200).send({id: user._id, token: token}); 
             }

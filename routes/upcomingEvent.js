@@ -32,7 +32,7 @@ router.get('/', (req, res) => verifyToken(req.headers['authorization'], (err) =>
             return res.status(403).send('Unauthorized Access');
         return res.status(500).send('Internal Server Error: Unable to verify token');    
     }
-    if(req.query === undefined) {
+    if(Object.keys(req.query).length === 0) {
         return upcomingEvent.find({}, (err, events) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to find any event');

@@ -19,8 +19,6 @@ router.post('/', (req, res) => {
         if(user === null) {
             return res.status(400).send('User does not exist');
         }
-        console.log(req.body.password);
-        console.log(user.password);
         if(bcrypt.compareSync(req.body.password, user.password)) {
             const token = createToken({id: user._id, username: user.username});
             return res.status(200).send({id: user._id, token: token}); 

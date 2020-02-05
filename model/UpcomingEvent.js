@@ -1,12 +1,12 @@
 const mongoose = require('mongoose');
 
-const UpcomingEvent = new mongoose.Schema({
+const UpcomingEventSchema = new mongoose.Schema({
     date: [{
         title: String,
         image: String,
         content:[String],
     }]
 });
-mongoose.model('UpcomingEvent', UserSchema);
+mongoose.model('UpcomingEvent', UpcomingEventSchema);
 
 module.exports = mongoose.model('UpcomingEvent');

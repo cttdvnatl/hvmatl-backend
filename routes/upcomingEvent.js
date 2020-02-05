@@ -28,3 +28,5 @@ router.post('/', (req, res) => {
     }
     return res.status(403).send('Unauthorized Access');
 });
+
+module.exports = router;

@@ -1,7 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 
-const bcrypt = require('bcryptjs');
 const {verifyToken} = require('../utils/authUtils');
 
 //Setup router
@@ -18,7 +17,7 @@ router.post('/', (req, res) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to verify token');
             return upcomingEvent.create({
-                date: req.body.date
+                date: req.body.
             }, (err) => {
                 if(err)
                     return res.status(500).send('Internal Server Error: Unable to create upcoming events');

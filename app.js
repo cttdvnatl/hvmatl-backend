@@ -10,7 +10,6 @@ const dbURL = process.env.MONGODB_URL || 'mongodb://hvmatl:hvmatl@localhost:2701
 
 mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true});
 //Config routes
-const indexRouter = require('./routes/index');
 const usersRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
 const upcomingEvent = require('./routes/upcomingEvent');
@@ -24,7 +23,6 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/authentication', authRouter);
 app.use('/upcoming-event', upcomingEvent);

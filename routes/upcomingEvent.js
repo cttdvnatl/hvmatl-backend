@@ -37,16 +37,16 @@ router.get('/', (req, res) => verifyToken(req.headers['authorization'], (err) =>
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to find any event');
             return res.status(200).send(events);    
-        })
+        });
     }
     if(req.query.date) {
         return upcomingEvent.findOne({date: req.query.date}, (err, event) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to find any event');
             return res.status(200).send(event.event);    
-        }) ;
+        });
     }
-}))
+}));
 
 router.get('/:id', (req, res) => verifyToken(req.headers['authorization'], (err) => {
     if(err) {
@@ -60,4 +60,18 @@ router.get('/:id', (req, res) => verifyToken(req.headers['authorization'], (err)
         return res.status(200).send(event);    
     }) ;
 }))
+
+router.delete('/:id', (req, res) => verifyToken(req.headers['authorization'], (err) => {
+    if(err) {
+        if(err === 'invalid token')
+            return res.status(403).send('Unauthorized Access');
+        return res.status(500).send('Internal Server Error: Unable to verify token');    
+    }   
+    return upcomingEvent.findOneAndDelete({_id:req.params.id}, (err, event) => {
+        if(err)
+            return res.status(500).send('Internal Server Error: Unable to find any event');    
+        return res.status(200).send(event);
+    }) ;
+}))
+
 module.exports = router;

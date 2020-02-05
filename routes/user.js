@@ -21,7 +21,7 @@ router.post('/register', function(req, res) {
 	  return res.status(500).send(`Internal Server Error: ${err}`);
 	//Create a user if it does not exist  
 	if(user === null) {
-	  const pwd = bcrypt.hashSync(req.body.password, 8);
+	  const pwd = bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10));
 	  return User.create({
 		username: req.body.username,
 		password: pwd

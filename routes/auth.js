@@ -13,7 +13,7 @@ router.use(bodyParser.json());
 const User = require('../model/User');
 
 router.post('/', (req, res) => {
-    User.findOne({username:req.body.username}, (err, user) => {
+    return User.findOne({username:req.body.username}, (err, user) => {
         if(err)
             return res.status(500).send('Internal Server Error: Unable to authenticate');
         if(user === null) {
@@ -23,6 +23,7 @@ router.post('/', (req, res) => {
             const token = createToken({id: user._id, username: user.username});
             return res.status(200).send({id: user._id, token: token}); 
         }
+        return res.status(400).status('Invalid password');
     });
 });
 

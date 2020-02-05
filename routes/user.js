@@ -36,20 +36,17 @@ router.post('/register', function(req, res) {
 });
 
 /* Find User by id*/
-router.get('/:id', (req, res) => {
-  if(req.headers['authorization']) {
-	const token = req.headers['authorization'].replace('Bearer ','');  
-	return verifyToken(token, (err) => {
-	  if(err)
-		return res.status(403).send("Access denied");
-	  User.findById(req.params.id, (err, user) => {
+router.get('/:id', (req, res) => verifyToken(token, (err) => {
+	if(err) {
+        if(err === 'invalid token')
+            return res.status(403).send('Unauthorized Access');
+        return res.status(500).send('Internal Server Error: Unable to verify token');
+    }
+	return User.findById(req.params.id, (err, user) => {
 		if(err)
 		  return res.status(404).send(`User not found`);
 		return res.status(200).send({id: user._id, username:user.username});
 	  })
-	});
-  }
-  return res.status(403).send('Access denied');
-});
+}));
 
 module.exports = router;

@@ -17,12 +17,13 @@ router.post('/', (req, res) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to verify token');
             return upcomingEvent.create({
-                date: req.body.
+                date: req.body.date,
+                event: req.body.event
             }, (err) => {
                 if(err)
                     return res.status(500).send('Internal Server Error: Unable to create upcoming events');
                 return res.status(201).send('Event created!');    
-            })
+            });
         })
     }
     return res.status(403).send('Unauthorized Access');

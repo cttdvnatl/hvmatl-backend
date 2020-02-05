@@ -13,7 +13,7 @@ const upcomingEvent = require('../model/UpcomingEvent');
 
 router.post('/', (req, res) => {
     if (req.headers['authorization']) {
-        const token = req.headers['authorization'].replace('Bearer ');
+        const token = req.headers['authorization'].replace('Bearer ', '');
         return verifyToken(token, (err) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to verify token');

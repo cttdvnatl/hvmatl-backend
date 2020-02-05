@@ -19,6 +19,8 @@ router.post('/', (req, res) => {
         if(user === null) {
             return res.status(400).send('User does not exist');
         }
+        console.log(req.body.password);
+        console.log(user.password);
         return bcrypt.compare(req.body.password, user.password, (err, success) => {
             if(err) {
                 console.log(err);

@@ -23,6 +23,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 app.use('/users', usersRouter);
 app.use('/authentication', authRouter);
 app.use('/upcoming-event', upcomingEvent);
@@ -40,7 +41,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.send({message: err.massage});
 });
 
 module.exports = app;

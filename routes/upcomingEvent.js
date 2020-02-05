@@ -44,7 +44,8 @@ router.get('/:date', (req, res) => verifyToken(req.headers['authorization'], (er
         if(err === 'invalid token')
             return res.status(403).send('Unauthorized Access');
         return res.status(500).send('Internal Server Error: Unable to verify token');    
-    }   
+    }
+    console.log(req.params.date);   
     return upcomingEvent.findOne({date: req.params.date}, (err, event) => {
         if(err)
             return res.status(500).send('Internal Server Error: Unable to find any event');

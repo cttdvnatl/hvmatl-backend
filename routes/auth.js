@@ -19,11 +19,14 @@ router.post('/', (req, res) => {
         if(user === null) {
             return res.status(400).send('User does not exist');
         }
-        if(bcrypt.compareSync(req.body.password, user.password)) {
-            const token = createToken({id: user._id, username: user.username});
-            return res.status(200).send({id: user._id, token: token}); 
-        }
-        return res.status(400).status('Invalid password');
+        return bcrypt.compare(req.body.password, user.password, (err, success) => {
+            if(err)
+                return res.status(500).send('Internal Server Error: Unable to authenticate');
+            if(success) {    
+                const token = createToken({id: user._id, username: user.username});
+                return res.status(200).send({id: user._id, token: token}); 
+            }
+        })
     });
 });
 

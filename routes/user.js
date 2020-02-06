@@ -24,7 +24,8 @@ router.post('/register', function(req, res) {
 	  const pwd = bcrypt.hashSync(req.body.password, 8);
 	  return User.create({
 		username: req.body.username,
-		password: pwd
+		password: pwd,
+		role: req.body.role
 	  }, (err, user) => {
 		if(err)
 		  return res.status(500).send(`Internal Server Error: ${err}`);

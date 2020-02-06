@@ -20,7 +20,7 @@ router.post('/', (req, res) => {
             return res.status(400).send('User does not exist');
         }
         if(bcrypt.compareSync(req.body.password, user.password)) {
-            const token = createToken({id: user._id, username: user.username});
+            const token = createToken({id: user._id, username: user.username, role: user.role});
             return res.status(200).send({id: user._id, token: token}); 
         }
         return res.status(400).send('Invalid password');

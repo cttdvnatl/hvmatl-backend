@@ -12,6 +12,7 @@ router.use(bodyParser.json());
 //user user model schema
 const User = require('../model/User');
 
+/**Authenticate a user */
 router.post('/', (req, res) => {
     return User.findOne({username:req.body.username}, (err, user) => {
         if(err)

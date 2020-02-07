@@ -36,7 +36,7 @@ router.post('/register', function(req, res) {
   })
 });
 
-/* Find User by id*/
+/* Get User by id*/
 router.get('/:id', (req, res) => verifyToken(req.headers['authorization'], (err) => {
 	if(err) {
         if(err === 'invalid token')

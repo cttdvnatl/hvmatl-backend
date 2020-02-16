@@ -50,7 +50,7 @@ router.get('/', (req, res) => verifyToken(req.headers['authorization'], (err) =>
         return upcomingEvent.findOne({date: req.query.date}, (err, event) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to find any event');
-            return res.status(200).send(event.event);    
+            return res.status(200).send(event ? event.event : null);    
         });
     }
 }));

@@ -18,10 +18,7 @@ router.post('/', (req, res) => verifyToken(req.headers['authorization'], (err, d
         return res.status(500).send('Internal Server Error: Unable to verify token');
     }
     if(decoded.role === 'admin') {
-        return carousel.create({
-            date: req.body.date,
-            event: req.body.event
-        }, (err, upcomingEvent) => {
+        return carousel.create(req.body, (err, upcomingEvent) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to create upcoming events');
             return res.status(201).send({message: 'Event created!', id: upcomingEvent._id});    
@@ -47,11 +44,19 @@ router.get('/', (req, res) => verifyToken(req.headers['authorization'], (err) =>
     }
     //Return the event for the given date 
     if(req.query.date) {
-        return carousel.findOne({date: req.query.date}, (err, event) => {
-            if(err)
-                return res.status(500).send('Internal Server Error: Unable to find any event');
-            return res.status(200).send(event ? event.event : null);    
-        });
+        if(req.query.language) {
+            return carousel.findOne({date: req.query.date, language: req.query.language}, (err, event) => {
+                if(err)
+                    return res.status(500).send('Internal Server Error: Unable to find any event');
+                return res.status(200).send(event ? event.event : null);
+            });
+        } else {
+            return carousel.findOne({date: req.query.date}, (err, event) => {
+                if (err)
+                    return res.status(500).send('Internal Server Error: Unable to find any event');
+                return res.status(200).send(event ? event.event : null);
+            });
+        }
     }
 }));
 

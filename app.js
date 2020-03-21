@@ -12,7 +12,7 @@ mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true});
 //Config routes
 const usersRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
-const upcomingEvent = require('./routes/upcomingEvent');
+const carousel = require('./routes/carousel');
 
 //Setup express server
 const app = express();
@@ -27,7 +27,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/users', usersRouter);
 app.use('/authentication', authRouter);
-app.use('/upcoming-event', upcomingEvent);
+app.use('/carousel', carousel);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

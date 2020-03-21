@@ -8,7 +8,7 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
-const upcomingEvent = require('../model/UpcomingEvent');
+const carousel = require('../model/carousel');
 
 /** Create an event */
 router.post('/', (req, res) => verifyToken(req.headers['authorization'], (err, decoded) => {
@@ -18,7 +18,7 @@ router.post('/', (req, res) => verifyToken(req.headers['authorization'], (err, d
         return res.status(500).send('Internal Server Error: Unable to verify token');
     }
     if(decoded.role === 'admin') {
-        return upcomingEvent.create({
+        return carousel.create({
             date: req.body.date,
             event: req.body.event
         }, (err, upcomingEvent) => {
@@ -39,7 +39,7 @@ router.get('/', (req, res) => verifyToken(req.headers['authorization'], (err) =>
     }
     //If no query params, return all the events
     if(Object.keys(req.query).length === 0) {
-        return upcomingEvent.find({}, (err, events) => {
+        return carousel.find({}, (err, events) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to find any event');
             return res.status(200).send(events);    
@@ -47,7 +47,7 @@ router.get('/', (req, res) => verifyToken(req.headers['authorization'], (err) =>
     }
     //Return the event for the given date 
     if(req.query.date) {
-        return upcomingEvent.findOne({date: req.query.date}, (err, event) => {
+        return carousel.findOne({date: req.query.date}, (err, event) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to find any event');
             return res.status(200).send(event ? event.event : null);    
@@ -62,12 +62,12 @@ router.get('/:id', (req, res) => verifyToken(req.headers['authorization'], (err)
             return res.status(403).send('Unauthorized Access');
         return res.status(500).send('Internal Server Error: Unable to verify token');    
     }   
-    return upcomingEvent.findById(req.params.id, (err, event) => {
+    return carousel.findById(req.params.id, (err, event) => {
         if(err)
             return res.status(500).send('Internal Server Error: Unable to find any event');
         return res.status(200).send(event);    
     }) ;
-}))
+}));
 
 /* Delete an event by its ID */
 router.delete('/:id', (req, res) => verifyToken(req.headers['authorization'], (err, decoded) => {
@@ -77,13 +77,13 @@ router.delete('/:id', (req, res) => verifyToken(req.headers['authorization'], (e
         return res.status(500).send('Internal Server Error: Unable to verify token');    
     }   
     if(decoded.role === 'admin') {
-        return upcomingEvent.findOneAndDelete({_id:req.params.id}, (err, event) => {
+        return carousel.findOneAndDelete({_id:req.params.id}, (err, event) => {
             if(err)
                 return res.status(500).send('Internal Server Error: Unable to find any event');    
             return res.status(200).send({id: event._id, status: 'deleted', message: 'record is deleted'});
         });
     } 
     return res.status(403).send('Permission is restricted');
-}))
+}));
 
 module.exports = router;

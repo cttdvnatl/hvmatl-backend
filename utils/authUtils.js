@@ -22,7 +22,8 @@ const jwt = require('jsonwebtoken');
 // -----END PUBLIC KEY-----`;
 
 const verifyToken = (req, res, callback) => {
-        const token = req.headers['authorization'].replace('Bearer ', '');
+        const auth = req.headers['authorization'] || req.headers['Authorization'];
+        const token = auth.replace('Bearer ', '');
         if(token) {
             return jwt.verify(token, process.env.TOKEN_DECODE_KEY, {algorithms: ['RS512']}, (err, decoded) => {
                 if (err) {

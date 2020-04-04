@@ -2,7 +2,7 @@ const router = require('./config');
 const Carousel = require('../model/carouselEntity');
 
 /** Create an event */
-router.post('/', (req, res) => verifyToken(req.headers['authorization'], 
+router.post('/', (req, res) => verifyToken(req, res, 
 (decoded) => {
     if(decoded.role === 'admin') {
         return Carousel.create(req.body, 
@@ -12,7 +12,7 @@ router.post('/', (req, res) => verifyToken(req.headers['authorization'],
 }));
 
 /** Get events */
-router.get('/', (req, res) => verifyToken(req.headers['authorization'],
+router.get('/', (req, res) => verifyToken(req, res,
     () => {
         //If no query params, return all the events
         if(Object.keys(req.query).length === 0) {
@@ -33,12 +33,12 @@ router.get('/', (req, res) => verifyToken(req.headers['authorization'],
     }));
 
 /* Get an event by its ID */
-router.get('/:id', (req, res) => verifyToken(req.headers['authorization'], 
+router.get('/:id', (req, res) => verifyToken(req, res, 
     () => Carousel.findById(req.params.id, 
         (err, event) => err ? res.status(500).send('Internal Server Error: Unable to find any event') : res.status(200).send(event))));
 
 /* Delete an event by its ID */
-router.delete('/:id', (req, res) => verifyToken(req.headers['authorization'], 
+router.delete('/:id', (req, res) => verifyToken(req, res, 
     (decoded) => {
         if(decoded.role === 'admin') {
             return Carousel.findOneAndDelete({_id:req.params.id}, 

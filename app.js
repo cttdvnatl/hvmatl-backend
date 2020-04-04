@@ -5,14 +5,17 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require("mongoose");
 const cors = require('cors');
+
 //Setup db connection
 const dbURL = process.env.MONGODB_URL;
+// const dbURL = "mongodb+srv://hvmatl:hvmatl@hvmatl-wqthh.gcp.mongodb.net/hvmatl?retryWrites=true&w=majority";
 
-mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true});
+mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true}).then(()=> console.log('Connect to MongoDB successfully'), (e) => console.log(e));
 //Config routes
 const usersRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
 const carousel = require('./routes/carousel');
+const weeklyEvent = require('./routes/weeklyEvent');
 
 //Setup express server
 const app = express();
@@ -24,10 +27,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 app.use('/users', usersRouter);
 app.use('/authentication', authRouter);
 app.use('/carousel', carousel);
+app.use('/weeklyEvent', weeklyEvent);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

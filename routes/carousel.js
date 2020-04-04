@@ -1,5 +1,6 @@
 const router = require('./config');
 const Carousel = require('../model/carouselEntity');
+const {verifyToken} = require('../utils/authUtils');
 
 /** Create an event */
 router.post('/', (req, res) => verifyToken(req, res, 

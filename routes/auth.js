@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 const {createToken} = require('../utils/authUtils');
 
 //user user model schema
-const User = require('../model/user');
+const User = require('../model/userEntity');
 
 /**Authenticate a user */
 router.post('/', 

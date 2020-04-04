@@ -1,9 +1,10 @@
 const router = require('./config');
+
 const bcrypt = require('bcryptjs');
 const {verifyToken} = require('../utils/authUtils');
 
 //use user model schema
-const User = require('../model/user');
+const User = require('../model/userEntity');
 
 /* Register a new user*/
 router.post('/register', (req, res) => 

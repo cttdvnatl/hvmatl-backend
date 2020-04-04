@@ -1,5 +1,5 @@
 const router = require('./config');
-const carouselEvent = require('../model/carousel');
+const carouselEvent = require('../model/carouselEntity');
 
 /** Create an event */
 router.post('/', 

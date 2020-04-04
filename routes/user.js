@@ -1,4 +1,8 @@
-const router = require('./config');
+const express = require('express');
+const bodyParser = require('body-parser');
+const router = express.Router();
+router.use(bodyParser.urlencoded({ extended: true }))
+router.use(bodyParser.json());
 
 const bcrypt = require('bcryptjs');
 const {verifyToken} = require('../utils/authUtils');
@@ -7,6 +11,7 @@ const {verifyToken} = require('../utils/authUtils');
 const User = require('../model/userEntity');
 
 /* Register a new user*/
+
 router.post('/register', (req, res) => 
   User.findOne({
 	username: req.body.username

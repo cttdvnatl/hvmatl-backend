@@ -15,7 +15,6 @@ mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true}).then(
 const usersRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
 const carousel = require('./routes/carousel');
-
 //Setup express server
 const app = express();
 

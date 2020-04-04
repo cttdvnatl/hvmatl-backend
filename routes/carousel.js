@@ -1,4 +1,9 @@
-const router = require('./config');
+const express = require('express');
+const bodyParser = require('body-parser');
+const router = express.Router();
+router.use(bodyParser.urlencoded({ extended: true }))
+router.use(bodyParser.json());
+
 const Carousel = require('../model/carouselEntity');
 const {verifyToken} = require('../utils/authUtils');
 
@@ -17,7 +22,7 @@ router.put('/:id', (req, res) => verifyToken(req, res,
     (decoded) => {
         if(decoded.role === 'admin') {
             return Carousel.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true}, 
-                (err, found) => err ? res.status(400).send('Unable to update the record') : res.status(204).send({message: 'Event updated!', id: found._id}));
+                (err, found) => err ? res.status(400).send(`Unable to update the record: ${err}`) : res.status(204).send({message: 'Event updated!', id: found._id}));
         }
         return res.status(403).send('Permission is restricted');
     }));
@@ -27,11 +32,16 @@ router.get('/', (req, res) => verifyToken(req, res,
     () => {
         //If no query params, return all the events
         if(Object.keys(req.query).length === 0) {
-            return Carousel.find({}, 
-                (err, events) => err ? res.status(500).send('Internal Server Error: Unable to find any event') : res.status(200).send(events));
-        }
-        //Return the event for the given date 
-        if(req.query.date) {
+            return Carousel.estimatedDocumentCount((err, count) => {
+                if(err) {
+                    return res.status(500).send(`Internal Server Error: ${err}`);
+                } else if (count > 0) {
+                    return Carousel.find((error, events) => error ? res.status(500).send(`Internal Server Error: ${error}`) : res.status(200).send(events));
+                } else {
+                    return res.status(200).send('There are no events');
+                }
+            })
+        } else if(req.query.date) {
             if(req.query.language) {
                 return Carousel.findOne({date: req.query.date, language: req.query.language},
                     (err, event) => err ? res.status(500).send('Internal Server Error: Unable to find any event') : res.status(200).send(event ? event.event : null));

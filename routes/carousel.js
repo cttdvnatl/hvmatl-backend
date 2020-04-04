@@ -11,6 +11,16 @@ router.post('/', (req, res) => verifyToken(req, res,
     return res.status(403).send('Permission is restricted');
 }));
 
+/** Update an event */
+router.put('/:id', (req, res) => verifyToken(req, res, 
+    (decoded) => {
+        if(decoded.role === 'admin') {
+            return Carousel.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true}, 
+                (err, found) => err ? res.status(400).send('Unable to update the record') : res.status(204).send({message: 'Event updated!', id: found._id}));
+        }
+        return res.status(403).send('Permission is restricted');
+    }));
+
 /** Get events */
 router.get('/', (req, res) => verifyToken(req, res,
     () => {

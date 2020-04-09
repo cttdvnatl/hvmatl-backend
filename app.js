@@ -30,7 +30,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/users', usersRouter);
 app.use('/authentication', authRouter);
 app.use('/carousel', carousel);
-app.use('/weeklyNews', carousel);
+app.use('/weeklyNews', weeklyNews);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

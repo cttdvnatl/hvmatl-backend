@@ -34,7 +34,7 @@ router.get('/', (req, res) => verifyToken(req, res,
         if(Object.keys(req.query).length === 0) {
             return weeklyNews.find({}, (err, events) => {
                 if(err)
-                    return res.status(500).send('Internal Server Error: Unable to find any event');
+                    return res.status(500).send('Internal Server Error: Unable to find any event' + err);
                 return res.status(200).send(events);
             });
         }

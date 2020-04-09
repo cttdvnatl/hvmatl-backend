@@ -50,7 +50,7 @@ router.get('/', (req, res) => verifyToken(req, res,
         if(req.query.from && req.query.to) {
             const query = weeklyNews.find();
             query.collection(weeklyNews.collection);
-            query.where('date').gte(req.body.from).lte(req.body.to).exec((err, event) => {
+            query.where('date').gte(new Date(req.body.from)).lt(new Date(req.body.to)).exec((err, event) => {
                 if(err)
                     return res.status(500).send('Internal Server Error: Unable to find any event');
                 return res.status(200).send(event ? event.event : null);

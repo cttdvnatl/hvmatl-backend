@@ -42,15 +42,15 @@ router.get('/', (req, res) => verifyToken(req, res,
         if(req.query.date) {
             return weeklyNews.findOne({date: req.query.date}, (err, news) => {
                 if(err)
-                    return res.status(500).send('Internal Server Error: Unable to find any event' + err);
+                    return res.status(500).send('Internal Server Error: Unable to find any event');
                 return res.status(200).send(news ? news : null);
             });
         }
         //Returns all the event in range
         if(req.query.from && req.query.to) {
-            return weeklyNews.find({date: {$gte: new Date(req.body.from), $lt: new Date(req.body.to)}}, (err, news) => {
+            return weeklyNews.find({date: {$gte: req.query.from, $lt: req.query.to}}, (err, news) => {
                 if(err)
-                    return res.status(500).send('Internal Server Error: Unable to find any event' + err);
+                    return res.status(500).send('Internal Server Error: Unable to find any event');
                 return res.status(200).send(news ? news : null);
             });
         }

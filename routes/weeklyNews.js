@@ -23,11 +23,8 @@ router.post('/',
 router.put('/:id', (req, res) => verifyToken(req, res, 
     (decoded) => {
         if(decoded.role === 'admin') {
-            return weeklyNews.findByIdAndUpdate(req.params.id, (err, news) => {
-                if (err)
-                    return res.status(500).send('Internal Server Error: Unable to find any event');
-                return res.status(200).send(news);
-            });
+            return weeklyNews.findByIdAndUpdate(req.params.id, req.body, {new:true, runValidators:true},
+                (err, news) => err ? res.status(400).send(`Unable to update the record: ${err}`) : res.status(204).send('News updated!'));
         }
         return res.status(403).send('Permission is restricted');
     }));
@@ -39,7 +36,7 @@ router.get('/', (req, res) => verifyToken(req, res,
         if(Object.keys(req.query).length === 0) {
             return weeklyNews.find({}, (err, news) => {
                 if(err)
-                    return res.status(500).send('Internal Server Error: Unable to find any event' + err);
+                    return res.status(500).send('Internal Server Error: Unable to find any news' + err);
                 return res.status(200).send(news);
             });
         }
@@ -47,7 +44,7 @@ router.get('/', (req, res) => verifyToken(req, res,
         if(req.query.date) {
             return weeklyNews.findOne({date: req.query.date}, (err, news) => {
                 if(err)
-                    return res.status(500).send('Internal Server Error: Unable to find any event');
+                    return res.status(500).send('Internal Server Error: Unable to find any news');
                 return res.status(200).send(news ? news : null);
             });
         }
@@ -55,7 +52,7 @@ router.get('/', (req, res) => verifyToken(req, res,
         if(req.query.from && req.query.to) {
             return weeklyNews.find({date: {$gte: req.query.from, $lt: req.query.to}}, (err, news) => {
                 if(err)
-                    return res.status(500).send('Internal Server Error: Unable to find any event');
+                    return res.status(500).send('Internal Server Error: Unable to find any news');
                 return res.status(200).send(news ? news : null);
             });
         }
@@ -65,7 +62,7 @@ router.get('/', (req, res) => verifyToken(req, res,
 router.get('/:id', (req, res) => verifyToken(req, res, 
     () => weeklyNews.findById(req.params.id, (err, news) => {
             if(err)
-                return res.status(500).send('Internal Server Error: Unable to find any event');
+                return res.status(500).send('Internal Server Error: Unable to find any news');
             return res.status(200).send(news);
     })));
 

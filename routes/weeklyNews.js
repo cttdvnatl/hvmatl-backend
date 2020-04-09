@@ -21,11 +21,16 @@ router.post('/',
 
 /** Update an event */
 router.put('/:id', (req, res) => verifyToken(req, res, 
-    () => weeklyNews.findByIdAndUpdate(req.params.id, (err, news) => {
-        if(err)
-            return res.status(500).send('Internal Server Error: Unable to find any event');
-        return res.status(200).send(news)
-    })));
+    (decoded) => {
+        if(decoded.role === 'admin') {
+            return weeklyNews.findByIdAndUpdate(req.params.id, (err, news) => {
+                if (err)
+                    return res.status(500).send('Internal Server Error: Unable to find any event');
+                return res.status(200).send(news);
+            });
+        }
+        return res.status(403).send('Permission is restricted');
+    }));
 
 /** Get events */
 router.get('/', (req, res) => verifyToken(req, res, 

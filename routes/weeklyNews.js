@@ -48,7 +48,7 @@ router.get('/', (req, res) => verifyToken(req, res,
         }
         //Returns all the event in range
         if(req.query.from && req.query.to) {
-            return weeklyNews.find({date: {$gte: new Date(req.body.from), $lt: new Date(req.body.to)}}, (err, event) => {
+            return weeklyNews.find({date: {$gte: req.body.from, $lt: req.body.to}}, (err, event) => {
                 if(err)
                     return res.status(500).send('Internal Server Error: Unable to find any event' + err);
                 return res.status(200).send(event ? event.event : null);

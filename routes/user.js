@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
-router.use(bodyParser.urlencoded({ extended: true }))
+router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 
 const bcrypt = require('bcryptjs');
@@ -33,5 +33,5 @@ router.post('/register', (req, res) =>
 /* Get User by id*/
 router.get('/:id', (req, res) => verifyToken(req, res, 
 	() => User.findById(req.params.id, (err, user) => err ? res.status(404).send('User not found') : res.status(200).send({id: user._id, username:user.username}))));
-
+	
 module.exports = router;

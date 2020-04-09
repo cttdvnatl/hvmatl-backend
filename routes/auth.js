@@ -1,7 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const router = express.Router();
-router.use(bodyParser.urlencoded({ extended: true }))
+router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 const bcrypt = require('bcryptjs');
 const {createToken} = require('../utils/authUtils');

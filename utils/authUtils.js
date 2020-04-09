@@ -22,9 +22,10 @@ const jwt = require('jsonwebtoken');
 // -----END PUBLIC KEY-----`;
 
 const verifyToken = (req, res, callback) => {
-        const auth = req.headers['authorization'] || req.headers['Authorization'];
+    const auth = req.headers['authorization'] || req.headers['Authorization'];
+    if(auth) {
         const token = auth.replace('Bearer ', '');
-        if(token) {
+        if (token) {
             return jwt.verify(token, process.env.TOKEN_DECODE_KEY, {algorithms: ['RS512']}, (err, decoded) => {
                 if (err) {
                     if (err === 'invalid token')
@@ -34,7 +35,8 @@ const verifyToken = (req, res, callback) => {
                 return callback(decoded);
             });
         }
-    return res.status(500).send('Internal Server Error: Unable to verify token');
+    }
+    return res.status(400).send('Unauthorized Access');
 };
 
 

@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 
 const WeeklyEvent = new mongoose.Schema({
-    language: String,
-    event: [ {
-        title: String,
-        header: String,
-        content:[String],
-    }],
-
+    date: Date,
+    image: String,
+    events: [
+        {
+            title: String,
+            src: String
+        }
+    ],
 });
 mongoose.model('WeeklyEvent', WeeklyEvent);
 

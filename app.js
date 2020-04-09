@@ -16,6 +16,7 @@ const usersRouter = require('./routes/user');
 const authRouter = require('./routes/auth');
 const carousel = require('./routes/carousel');
 const weeklyNews = require('./routes/weeklyNews');
+const weeklyEvent = require('./routes/weeklyEvent');
 
 //Setup express server
 const app = express();
@@ -31,6 +32,8 @@ app.use('/users', usersRouter);
 app.use('/authentication', authRouter);
 app.use('/carousel', carousel);
 app.use('/weeklyNews', weeklyNews);
+app.use('/weeklyEvent', weeklyEvent);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

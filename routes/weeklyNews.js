@@ -38,7 +38,7 @@ router.get('/', (req, res) => verifyToken(req, res,
                 if(err)
                     return res.status(500).send('Internal Server Error: Unable to find any news' + err);
                 return res.status(200).send(news);
-            });
+            }).sort({date:'desc'});
         }
         //Return the event for the given date
         if(req.query.date) {
@@ -46,7 +46,7 @@ router.get('/', (req, res) => verifyToken(req, res,
                 if(err)
                     return res.status(500).send('Internal Server Error: Unable to find any news');
                 return res.status(200).send(news ? news : null);
-            });
+            }).sort({date:'desc'});
         }
         //Returns all the event in range
         if(req.query.from && req.query.to) {
@@ -54,7 +54,7 @@ router.get('/', (req, res) => verifyToken(req, res,
                 if(err)
                     return res.status(500).send('Internal Server Error: Unable to find any news');
                 return res.status(200).send(news ? news : null);
-            });
+            }).sort({date:'desc'});
         }
     }));
 

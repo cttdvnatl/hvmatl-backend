@@ -4,7 +4,7 @@ const router = express.Router();
 router.use(bodyParser.urlencoded({ extended: true }));
 router.use(bodyParser.json());
 const weeklyNews = require('../model/weeklyNews');
-
+const {verifyToken} = require('../utils/authUtils');
 /** Create an event */
 router.post('/', 
 (req, res) => verifyToken(req, res, 

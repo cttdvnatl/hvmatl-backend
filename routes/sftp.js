@@ -20,7 +20,12 @@ router.post('/',
             if(decoded.role === 'admin') {
                 return sftp.connect(config).then(() => sftp.put(req.body.localSrc, req.body.remote).then(
                     () => res.status(201).send({message: 'File upload successfully!'}),
-                    (err) => res.status(400).send({message: err}))).finally(() => sftp.end());
+                    (err) => res.status(400).send({message: err}))).finally(() => {
+                        console.log(sftp.cwd());
+                        if(sftp) {
+                            sftp.end();
+                        }
+                });
             }
             return res.status(403).send('Permission is restricted');
         }));

@@ -9,15 +9,12 @@ const {verifyToken} = require('../utils/authUtils');
 
 /** Create an event */
 router.post('/', (req, res) => verifyToken(req, res,
-    (decoded) => {
-        if(decoded.role === 'admin') {
-            return prayerReq.create(req.body,
-                (err, prayerReq) => err ? res.status(500)
-                    .send('Internal Server Error: Unable to create new membership info') :
-                    res.status(201)
-                        .send({message: 'New Prayer Request created!', id: prayerReq._id}));
-        }
-        return res.status(403).send('Permission is restricted');
+    () => {
+        return prayerReq.create(req.body,
+            (err, prayerReq) => err ? res.status(500)
+                .send('Internal Server Error: Unable to create new membership info') :
+                res.status(201)
+                    .send({message: 'New Prayer Request created!', id: prayerReq._id}));
     }));
 
 /** Update an event */

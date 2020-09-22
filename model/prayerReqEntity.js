@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 
 const prayerReq = new mongoose.Schema({
-    fullName: String,
+    soulName: String,
     email: String,
     phone: String,
-    massTime: Date,
+    massDate: Date,
+    massTime: String,
     memberId: String,
     message: String
 });

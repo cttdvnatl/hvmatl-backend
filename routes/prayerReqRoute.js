@@ -65,6 +65,11 @@ router.get('/', (req, res) => verifyToken(req, res,
                 (err, info) => err ? res.status(500)
                         .send('Internal Server Error: Unable to find any prayer request info') :
                     res.status(200).send(info));
+        } else if (req.query.from && req.query.to) {
+            return prayerReq.find({massDate: {$gte: req.query.from, $lte: req.query.to}},
+                (err, info) => err ? res.status(500)
+                        .send('Internal Server Error: Unable to find any prayer request info') :
+                    res.status(200).send(info));
         }
         return res.status(500).send('Internal Server Error: Unable to find any prayer request')
     }));

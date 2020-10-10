@@ -19,7 +19,7 @@ const weeklyNews = require('./routes/weeklyNews');
 const weeklyEvent = require('./routes/weeklyEvent');
 const sftp = require('./routes/sftp');
 const prayerReq = require('./routes/prayerReqRoute');
-const allSoulsFeastReq = require('./routes/allSoulsFeast');
+const allSoulsFeastRouter = require('./routes/allSoulsFeast');
 //Setup express server
 const app = express();
 
@@ -37,7 +37,7 @@ app.use('/weeklyNews', weeklyNews);
 app.use('/weeklyEvent', weeklyEvent);
 app.use('/file', sftp);
 app.use('/prayerRequest', prayerReq);
-app.use('/allSoulsFeastReq', allSoulsFeastReq);
+app.use('/allSoulsFeast', allSoulsFeastRouter);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

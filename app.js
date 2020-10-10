@@ -19,7 +19,7 @@ const weeklyNews = require('./routes/weeklyNews');
 const weeklyEvent = require('./routes/weeklyEvent');
 const sftp = require('./routes/sftp');
 const prayerReq = require('./routes/prayerReqRoute');
-const allSoulsFeastReq = require('./routes/allSoulsFeastReq');
+const allSoulsFeastReq = require('./routes/allSoulsFeast');
 //Setup express server
 const app = express();
 

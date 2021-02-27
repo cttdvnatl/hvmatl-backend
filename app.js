@@ -5,10 +5,10 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const mongoose = require("mongoose");
 const cors = require('cors');
+require('dotenv/config');
 
 //Setup db connection
 const dbURL = process.env.MONGODB_URL;
-// const dbURL = "mongodb+srv://hvmatl:hvmatl@hvmatl-wqthh.gcp.mongodb.net/hvmatl?retryWrites=true&w=majority";
 
 mongoose.connect(dbURL, {useNewUrlParser: true, useUnifiedTopology: true}).then(()=> console.log('Connect to MongoDB successfully'), (e) => console.log(e));
 //Config routes
@@ -20,6 +20,7 @@ const weeklyEvent = require('./routes/weeklyEvent');
 const sftp = require('./routes/sftp');
 const prayerReq = require('./routes/prayerReqRoute');
 const allSoulsFeastRouter = require('./routes/allSoulsFeast');
+const upload = require('./routes/upload');
 //Setup express server
 const app = express();
 
@@ -38,6 +39,7 @@ app.use('/weeklyEvent', weeklyEvent);
 app.use('/file', sftp);
 app.use('/prayerRequest', prayerReq);
 app.use('/allSoulsFeast', allSoulsFeastRouter);
+app.use('/upload', upload);
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
